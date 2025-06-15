@@ -4,6 +4,19 @@ A customizable Angular library for displaying a heatmap calendar (like GitHub co
 
 ---
 
+## Features
+
+- 📅 Month and Year view modes
+- 🎨 Customizable color schemes
+- 📊 Visual month separators in year view
+- 📝 Day and month labels
+- 🖱️ Interactive cells with hover effects
+- 💡 Tooltips showing date and value
+- ⚡ Fully reactive using Angular signals
+- 🎯 Accessible keyboard navigation
+
+---
+
 ## Installation
 
 1. **Build the library:**
@@ -42,47 +55,53 @@ The component expects Angular signals for all inputs. You can use the `signal` f
 ```typescript
 import { signal } from '@angular/core';
 
+// Your heatmap data
 heatmapData = signal([
   { date: '2024-06-01', value: 2 },
   { date: '2024-06-02', value: 5 },
   // ...
 ]);
 
+// View mode: 'month' or 'year'
 viewMode = signal<'month' | 'year'>('month');
+
+// Color scheme from low to high intensity
 colorScheme = signal(['#ebedf0', '#c6e48b', '#7bc96f', '#239a3b', '#196127']);
+
+// Date range for the heatmap
+startDate = signal('2024-01-01');
+endDate = signal('2024-12-31');
 ```
 
-### 3. Use the Component with Signals
+### 3. Use the Component
 
-**Month View Example:**
 ```html
 <lib-heatmap-calendar
   [data]="heatmapData"
   [view]="viewMode"
   [colorScheme]="colorScheme"
+  [startDate]="startDate"
+  [endDate]="endDate"
   (cellClick)="onCellClick($event)"
 ></lib-heatmap-calendar>
-```
-
-**Year View Example:**
-```typescript
-viewMode.set('year');
-colorScheme.set(['#f0f0f0', '#b3cde0', '#6497b1', '#005b96', '#03396c']);
 ```
 
 ### 4. Handle Cell Clicks
 
 ```typescript
 onCellClick(event: { date: string, value: number }) {
-  alert(`Date: ${event.date}\nValue: ${event.value}`);
+  console.log(`Date: ${event.date}, Value: ${event.value}`);
 }
 ```
 
 ### 5. Customization
-- **Color Scheme:** Pass any array of color strings to the `colorScheme` signal.
+
+- **Color Scheme:** Pass any array of color strings to the `colorScheme` signal. Colors should be ordered from lowest to highest intensity.
+- **View Mode:** Switch between 'month' and 'year' views using the `view` signal.
+- **Date Range:** Set the start and end dates for the heatmap using `startDate` and `endDate` signals.
 - **Tooltips:** Hovering a cell shows the date and value.
-- **HTML-based:** The grid is rendered with `<div>`s for easy CSS customization.
-- **Reactive:** All updates to signals are reflected instantly in the view.
+- **Month Separators:** In year view, months are visually separated with subtle dividers.
+- **Labels:** Day and month labels are automatically displayed and styled.
 
 ---
 
@@ -93,10 +112,25 @@ onCellClick(event: { date: string, value: number }) {
 | `data`        | `Signal<HeatmapData[]>`     | Signal of array `{ date: string, value: number }` |
 | `view`        | `Signal<'month' | 'year'>`  | Signal for calendar view mode                |
 | `colorScheme` | `Signal<string[]>`          | Signal of array of colors (low to high)      |
+| `startDate`   | `Signal<string>`            | Signal for start date (YYYY-MM-DD)           |
+| `endDate`     | `Signal<string>`            | Signal for end date (YYYY-MM-DD)             |
 
 | Output      | Type                                 | Description                  |
 |-------------|--------------------------------------|------------------------------|
-| `cellClick` | `{ date: string, value: number }`     | Emits when a cell is clicked |
+| `cellClick` | `{ date: string, value: number }`    | Emits when a cell is clicked |
+
+---
+
+## Styling
+
+The component uses CSS Grid and Flexbox for layout. You can customize the appearance by overriding these CSS classes:
+
+- `.heatmap-calendar`: Main container
+- `.month-labels`: Month labels container
+- `.day-labels`: Day labels container
+- `.heatmap-cells`: Grid of heatmap cells
+- `.heatmap-cell`: Individual cell
+- `.month-separator`: Month separator in year view
 
 ---
 

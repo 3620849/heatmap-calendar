@@ -1,14 +1,35 @@
 <div class="heatmap-calendar">
-  <div class="heatmap-row" *ngFor="let row of grid()">
-    <div
-      class="heatmap-cell"
-      *ngFor="let cell of row"
-      [style.background]="cell.color"
-      [attr.title]="cell.date + ': ' + cell.value"
-      (click)="onCellClick(cell)"
-      tabindex="0"
-    >
-      <!-- Optionally show value or leave empty for color only -->
+  <!-- Month labels -->
+  <div class="month-labels">
+    <div class="month-label" *ngFor="let label of monthLabels()" [style.grid-column]="label.weekIndex + 2">
+      {{ label.label }}
+    </div>
+  </div>
+  
+  <!-- Main grid with day labels -->
+  <div class="heatmap-grid">
+    <!-- Day labels -->
+    <div class="day-labels">
+      <div class="day-label" *ngFor="let day of dayLabels">
+        {{ day }}
+      </div>
+    </div>
+    
+    <!-- Heatmap cells -->
+    <div class="heatmap-cells">
+      <div class="heatmap-row" *ngFor="let row of grid(); let rowIndex = index">
+        <div
+          class="heatmap-cell"
+          *ngFor="let cell of row; let cellIndex = index"
+          [style.background]="cell.color"
+          [attr.title]="cell.date + ': ' + cell.value"
+          [class.month-separator]="cellIndex > 0 && cell.month !== row[cellIndex - 1].month"
+          (click)="onCellClick(cell)"
+          tabindex="0"
+        >
+          <!-- Optionally show value or leave empty for color only -->
+        </div>
+      </div>
     </div>
   </div>
 </div>

@@ -1,6 +1,46 @@
 .heatmap-calendar {
   display: flex;
   flex-direction: column;
+  gap: 8px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 12px;
+}
+
+.month-labels {
+  display: grid;
+  grid-template-columns: 20px repeat(auto-fill, 20px);
+  gap: 2px;
+  margin-left: 60px;
+}
+
+.month-label {
+  color: #666;
+  text-align: center;
+}
+
+.heatmap-grid {
+  display: flex;
+  gap: 8px;
+}
+
+.day-labels {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 50px;
+}
+
+.day-label {
+  height: 20px;
+  line-height: 20px;
+  color: #666;
+  text-align: right;
+  padding-right: 8px;
+}
+
+.heatmap-cells {
+  display: flex;
+  flex-direction: column;
   gap: 2px;
 }
 
@@ -23,4 +63,20 @@
 .heatmap-cell:hover, .heatmap-cell:focus {
   outline: 2px solid #333;
   z-index: 2;
+}
+
+/* Month separator styles */
+.heatmap-cell.month-separator {
+  margin-left: 8px;
+  position: relative;
+}
+
+.heatmap-cell.month-separator::before {
+  content: '';
+  position: absolute;
+  left: -5px;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background-color: #e0e0e0;
 }
