@@ -1,0 +1,14 @@
+<div class="heatmap-calendar">
+  <div class="heatmap-row" *ngFor="let row of grid()">
+    <div
+      class="heatmap-cell"
+      *ngFor="let cell of row"
+      [style.background]="cell.color"
+      [attr.title]="cell.date + ': ' + cell.value"
+      (click)="onCellClick(cell)"
+      tabindex="0"
+    >
+      <!-- Optionally show value or leave empty for color only -->
+    </div>
+  </div>
+</div>

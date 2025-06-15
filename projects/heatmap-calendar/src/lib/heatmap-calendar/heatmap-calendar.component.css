@@ -1,0 +1,26 @@
+.heatmap-calendar {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.heatmap-row {
+  display: flex;
+  flex-direction: row;
+  gap: 2px;
+}
+
+.heatmap-cell {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: outline 0.2s;
+  outline: 1px solid #e0e0e0;
+  position: relative;
+}
+
+.heatmap-cell:hover, .heatmap-cell:focus {
+  outline: 2px solid #333;
+  z-index: 2;
+}
