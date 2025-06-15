@@ -1,4 +1,5 @@
 import { Component, Input, Output, EventEmitter, signal, computed, effect, Signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 export interface HeatmapData {
   date: string; // UTC date string
@@ -9,6 +10,8 @@ export type HeatmapView = 'month' | 'year';
 
 @Component({
   selector: 'lib-heatmap-calendar',
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './heatmap-calendar.component.html',
   styleUrls: ['./heatmap-calendar.component.css']
 })

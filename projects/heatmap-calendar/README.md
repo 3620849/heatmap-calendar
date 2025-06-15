@@ -1,6 +1,6 @@
 # Heatmap Calendar Library
 
-A customizable Angular library for displaying a heatmap calendar (like GitHub contributions) using HTML elements. Supports month/year views, color schemes, tooltips, and click events.
+A customizable Angular library for displaying a heatmap calendar (like GitHub contributions) using HTML elements. Supports month/year views, color schemes, tooltips, and click events. **Now fully reactive with Angular signals!**
 
 ---
 
@@ -35,37 +35,39 @@ import { HeatmapCalendarModule } from 'heatmap-calendar';
 export class AppModule {}
 ```
 
-### 2. Prepare Data
+### 2. Prepare Data as Signals
 
-The component expects an array of objects with a `date` (UTC string, e.g. '2024-06-15') and a `value` (number of occurrences):
+The component expects Angular signals for all inputs. You can use the `signal` function from `@angular/core`:
 
 ```typescript
-heatmapData = [
+import { signal } from '@angular/core';
+
+heatmapData = signal([
   { date: '2024-06-01', value: 2 },
   { date: '2024-06-02', value: 5 },
   // ...
-];
+]);
+
+viewMode = signal<'month' | 'year'>('month');
+colorScheme = signal(['#ebedf0', '#c6e48b', '#7bc96f', '#239a3b', '#196127']);
 ```
 
-### 3. Use the Component
+### 3. Use the Component with Signals
 
 **Month View Example:**
 ```html
 <lib-heatmap-calendar
   [data]="heatmapData"
-  view="month"
-  [colorScheme]="['#ebedf0', '#c6e48b', '#7bc96f', '#239a3b', '#196127']"
+  [view]="viewMode"
+  [colorScheme]="colorScheme"
   (cellClick)="onCellClick($event)"
 ></lib-heatmap-calendar>
 ```
 
 **Year View Example:**
-```html
-<lib-heatmap-calendar
-  [data]="heatmapData"
-  view="year"
-  [colorScheme]="['#f0f0f0', '#b3cde0', '#6497b1', '#005b96', '#03396c']"
-></lib-heatmap-calendar>
+```typescript
+viewMode.set('year');
+colorScheme.set(['#f0f0f0', '#b3cde0', '#6497b1', '#005b96', '#03396c']);
 ```
 
 ### 4. Handle Cell Clicks
@@ -77,23 +79,31 @@ onCellClick(event: { date: string, value: number }) {
 ```
 
 ### 5. Customization
-- **Color Scheme:** Pass any array of color strings to `[colorScheme]`.
+- **Color Scheme:** Pass any array of color strings to the `colorScheme` signal.
 - **Tooltips:** Hovering a cell shows the date and value.
 - **HTML-based:** The grid is rendered with `<div>`s for easy CSS customization.
+- **Reactive:** All updates to signals are reflected instantly in the view.
 
 ---
 
 ## API
 
-| Input         | Type                | Description                                  |
-|---------------|---------------------|----------------------------------------------|
-| `data`        | `HeatmapData[]`     | Array of `{ date: string, value: number }`   |
-| `view`        | `'month' | 'year'`  | Calendar view mode                           |
-| `colorScheme` | `string[]`          | Array of colors (low to high)                |
+| Input         | Type                        | Description                                  |
+|---------------|-----------------------------|----------------------------------------------|
+| `data`        | `Signal<HeatmapData[]>`     | Signal of array `{ date: string, value: number }` |
+| `view`        | `Signal<'month' | 'year'>`  | Signal for calendar view mode                |
+| `colorScheme` | `Signal<string[]>`          | Signal of array of colors (low to high)      |
 
 | Output      | Type                                 | Description                  |
 |-------------|--------------------------------------|------------------------------|
 | `cellClick` | `{ date: string, value: number }`     | Emits when a cell is clicked |
+
+---
+
+## Why Signals?
+- **Performance:** Signals enable fine-grained reactivity and efficient change detection in Angular 16+.
+- **Simplicity:** No need for manual change detection or lifecycle hooks for input changes.
+- **Future-proof:** Aligns with Angular's new reactive primitives.
 
 ---
 
